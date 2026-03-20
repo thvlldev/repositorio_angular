@@ -4,22 +4,22 @@
  <div class="card shadow">
  <div class="card-body">
  <h2 class="text-center mb-4">Cadastro de Usuário</h2>
- <form>
+ <form [formGroup] = "form" (ngSubmit) = "onSubmit()">
  <div class="mb-3">
  <label for="nome" class="form-label">Nome completo</label>
  <input type="text" class="form-control" id="nome" placeholder="Digite
- seu nome completo" />
+ seu nome completo" formControlName ="nome" />
  </div>
  <div class="mb-3">
  <label for="email" class="form-label">E-mail</label>
  <input type="email" class="form-control" id="email" placeholder="Digite
- seu e-mail" />
+ seu e-mail" formControlName = "email"/>
  </div>
 
  <div class="mb-3">
  <label for="senha" class="form-label">Senha</label>
  <input type="password" class="form-control" id="senha"
-placeholder="Digite sua senha" #senhaInput (input) = "validarSenha(senhaInput.value)" />
+placeholder="Digite sua senha" #senhaInput (input) = "validarSenha(senhaInput.value)" formControlName = "senha"/>
 
 <label [ngStyle]="{color: regraMinCaractere ? 'green' : 'red'}"><i>A senha deve ter no mínimo 8 caracteres.</i></label><br>
 <label [ngStyle]="{color: regraMaxCaractere ? 'green' : 'red'}"><i>A senha deve ter no máximo 16 caracteres.</i></label><br>
@@ -39,10 +39,12 @@ nascimento</label>
  <input type="date" class="form-control" id="dataNascimento" />
  </div>
  <div class="mb-3">
- <label for="endereco" class="form-label">Endereço</label>
- <input type="text" class="form-control" id="endereco"
-placeholder="Digite seu endereço" />
+ <label for="cep" class="form-label">CEP</label>
+ <input type="text" class="form-control" id="cep"
+placeholder="Digite seu cep" formControlName="cep"/> 
  </div>
+
+ <div><button type="button" (click)="buscarCep">Buscar</button></div>
 
  <div class="mb-3 col-12">
  <label for="endereco" class="form-label">Bairro</label>
@@ -50,16 +52,12 @@ placeholder="Digite seu endereço" />
 placeholder="Digite seu bairro"/>
  </div>
 
- <div class="mb-3 col-12">
- <label for="endereco" class="form-label">CEP</label>
- <input type="text" class="form-control" id="endereco"
-placeholder="Digite seu CEP"/>
- </div>
+
 
  <div class="mb-3">
- <label for="cidade" class="form-label">Cidade</label>
- <input type="text" class="form-control" id="cidade" placeholder="Digite
- sua cidade"/>
+ <label for="logradouro" class="form-label">logradouro</label>
+ <input type="text" class="form-control" id="logradouro" placeholder="Digite
+ seu logradouro" formControlName="logradouro"/>
 
 
 

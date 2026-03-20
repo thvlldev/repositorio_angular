@@ -1,13 +1,42 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import {ReactiveFormsModule, FormsModule, FormControl, FormGroup, Validators } from '@angular/forms';
+import { EnderecoService } from '../services/endereco.service';
 
 @Component({
   selector: 'app-cadastro',
-  imports: [CommonModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule],
   templateUrl: './cadastro.html',
   styleUrl: './cadastro.css',
 })
 export class Cadastro {
+  private enderecoService = inject(EnderecoService);
+
+  nomeRegex = /^[A-Za-zÀ-ÿ]+(?:\s+[A-Za-zÀ-ÿ]+)+$/;
+
+  passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,16}$/;
+
+  emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+
+form = new FormGroup({
+  nome: new FormControl('', [Validators.required, Validators.pattern(this.nomeRegex)]), //campo nome
+  email: new FormControl('', [Validators.required, Validators.pattern(this.emailRegex)] ), //campo email
+  senha: new FormControl('', [Validators.required, Validators.pattern(this.passwordRegex)]), //campo senha
+  cep: new FormControl(''),
+  logradouro: new FormControl({value: '', disabled: true})
+
+});
+
+
+onSubmit() {
+
+  if(this.form.valid)
+    console.log("Formulário válido: ", this.form.value);
+  else
+    console.log("Formulário inválido", this.form.value);
+
+}
 
 regraMinCaractere: Boolean = false;
 regraMaxCaractere: Boolean = false;
@@ -40,7 +69,15 @@ validarSenha(senha: string): void {
 }
 
 
+get buscarCep(){
 
+  const cep = this.form.get('cep')?.value ?? '';
+  this.enderecoService.getEndereco(cep).subscribe(endereco => {
+    this.form.get('logradouro')?.setValue(endereco.logradouro);
+  });
+
+  return true;
+}
 }
 
 
